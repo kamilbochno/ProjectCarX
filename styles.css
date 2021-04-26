@@ -1,0 +1,7 @@
+.background_image {
+    width: 100%;
+    height: 1080px;
+    background-image: url('images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
