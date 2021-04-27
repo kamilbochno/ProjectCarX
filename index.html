@@ -9,17 +9,29 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 
-    <!-- Links to the libraries needed -->
-    <link rel="stylesheet" href="/node_modules/bxslider/dist/jquery.bxslider.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="/node_modules/bxslider/dist/jquery.bxslider.min.js"></script>
+     <!-- Links to the libraries needed -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+   
+     <script>
+       $(document).ready(function(){
+         $('.slider-area').bxSlider({
+            auto: true,
+            pager: true,
+            slideWidth: 600,
+            
+
+         });
+       });
+     </script>
 
     <title>ProjectCarX</title>
   </head>
   <body>
   
   <main>
-    <div class="background_image" class="img-fluid">
+    
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       
@@ -61,23 +73,35 @@
         </div>
       </div>
     </nav>
-  </div>
+  
 
-  <div class="container-fluid">
+
+    <!-- Slider HTML --> 
+      <div class="container">
+        <div class="row">
+          <div class="slider-area">
+            <div>
+              <img src="images/slide1.jpg" alt="slider_image" class="img-fluid" style="max-width: 104%;">
+            </div>
+            <div>
+              <img src="images/slide2.jpg" alt="slider_image" class="img-fluid">
+            </div>
+            <div>
+              <img src="images/slide3.jpg" alt="slider_image" class="img-fluid" style="max-width: 120%;">
+            </div>
+          
+        </div>
+      </div>
+      </div>
+
   <!-- Initialize the slider -->
-<script>
-  $(document).ready(function(){
-    $('.slider').bxSlider();
-  });
-</script>
 
-  <!-- Slider HTML --> 
-<div class="slider">
-  <div>I am a slide.</div>
-  <div>I am another slide.</div>
-</div>
+
   </div>
+  </div>
+  
   </main>
+  
     <script src="js/bootstrap.js"></script>
   </body>
 </html>
