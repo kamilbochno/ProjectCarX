@@ -24,7 +24,7 @@
                   <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                 </div>
                 <div class="col text-center">
-                  <p class="fs-5">Already registered? <a href="login.php">Click here</a></p>
+                  <p class="fs-5">Already registered? <a href="loginform.php">Click here</a></p>
                 </div>
                 <div class="col text-center" style="margin-bottom: 10px;">
                 <button type="submit" class="btn btn-primary">Submit</button>
