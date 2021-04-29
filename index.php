@@ -1,3 +1,10 @@
+<?php
+  
+  session_start();
+
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -53,7 +60,11 @@
   
   <main>
     
-    
+    <?php
+
+      echo"<p>Hello ".$_SESSION['login']."!";
+
+    ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       
         <a class="navbar-brand" href="#">
