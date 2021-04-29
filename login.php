@@ -1,5 +1,7 @@
 <?php
 
+  session_start();
+
   require_once "connect.php";
   
   $connect = @new mysqli($host,$db_user,$db_password, $db_name);
@@ -22,15 +24,17 @@
         if($how_many_users>0)
         {
           $char = $result->fetch_assoc();
-          $login = $char['email'];
+          $_SESSION['login'] = $char['email'];
 
-          
+          unset($_SESSION['error']);
 
           $result->close();
 
           header('Location: index.php');
         }  else {
-
+          
+          $_SESSION['error']='<span style="color:red;">Wrong email or password!</span>';
+          header('Location:loginform.php');
         }
     }
 
