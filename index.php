@@ -66,24 +66,24 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active px-2" aria-current="page" href="#">Home</a>
+              <a class="nav-link active px-2" aria-current="page" href="index.php">Home</a>
             </li>
             <li class="nav-item px-2">
-              <a class="nav-link" href="#">Features</a>
+              <a class="nav-link" href="index.php#services_description">What we do?</a>
             </li>
             <li class="nav-item px-2">
-              <a class="nav-link" href="#">Pricing</a>
+              <a class="nav-link" href="index.php#contact">Contact</a>
             </li>
           </div>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul class="navbar-nav">
               <li class="nav-item px-2">
-                <a class="nav-link" href="#">Log In</a>
+                <a class="nav-link" href="loginform.php">Log In</a>
               </li>
             
             
               <li class="nav-item px-2">
-                <a class="nav-link" href="#">Register</a>
+                <a class="nav-link" href="registerform.php">Register</a>
               </li>
             </ul>
       
