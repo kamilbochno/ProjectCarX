@@ -1,3 +1,12 @@
+<?php
+  session_start();
+
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +35,10 @@
                 <div class="col text-center">
                   <p class="fs-5">Not registered? <a href="registerform.php">Click here</a></p>
                 </div>
+
+                <?php
+                    if(isset($_SESSION['error'])) echo $_SESSION['error'];
+                ?>
                 <div class="col text-center" style="margin-bottom: 10px;">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
