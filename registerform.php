@@ -12,7 +12,7 @@
 
     
     <div class="container d-flex justify-content-center text-center" style="margin-top: 200px; background-color: #D1D1D1; max-width:400px;">
-            <form action="login.php" method="post">
+            <form action="register.php" method="post">
                 <p class="fs-3 text-center">Register</p>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Email address</label>

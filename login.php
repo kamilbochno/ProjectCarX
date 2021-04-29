@@ -1,8 +1,9 @@
 <?php
 
-session_start();
+  $email = $_POST['email'];
+  $password = $_POST['password'];
 
-if (!empty($_POST['email']) && !empty($_POST['password']))
-{
+  echo $email. "<br />";
+  echo $password;
 
-}
+?>
