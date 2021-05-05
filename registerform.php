@@ -1,131 +1,135 @@
 <?php
-require_once('connect.php');
+// Include config file
+require_once "connect.php";
+ 
+// Define variables and initialize with empty values
+$username = $password = $confirm_password = "";
+$username_err = $password_err = $confirm_password_err = "";
+ 
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+    // Validate username
+    if(empty(trim($_POST["username"]))){
+        $username_err = "Please enter a username.";
+    } else{
+        // Prepare a select statement
+        $sql = "SELECT id FROM users WHERE username = ?";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            
+            // Set parameters
+            $param_username = trim($_POST["username"]);
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                /* store result */
+                mysqli_stmt_store_result($stmt);
+                
+                if(mysqli_stmt_num_rows($stmt) == 1){
+                    $username_err = "This username is already taken.";
+                } else{
+                    $username = trim($_POST["username"]);
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
+    // Validate password
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Please enter a password.";     
+    } elseif(strlen(trim($_POST["password"])) < 6){
+        $password_err = "Password must have atleast 6 characters.";
+    } else{
+        $password = trim($_POST["password"]);
+    }
+    
+    // Validate confirm password
+    if(empty(trim($_POST["confirm_password"]))){
+        $confirm_password_err = "Please confirm password.";     
+    } else{
+        $confirm_password = trim($_POST["confirm_password"]);
+        if(empty($password_err) && ($password != $confirm_password)){
+            $confirm_password_err = "Password did not match.";
+        }
+    }
+    
+    // Check input errors before inserting in database
+    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
+        
+        // Prepare an insert statement
+        $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+         
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+            
+            // Set parameters
+            $param_username = $username;
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Redirect to login page
+                header("location: loginform.php");
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
+    // Close connection
+    mysqli_close($link);
+}
 ?>
-<!DOCTYPE html>
+ 
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register new account!</title>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-      .error {
-        color: red;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
+        body{ font: 14px sans-serif; }
+        .wrapper{ width: 400px; padding: 20px; }
     </style>
-
-    
-    
 </head>
 <body style="background-image: url(images/background.jpg); background-repeat: no-repeat; background-size: cover; max-width: 1550px; height: 500px;">
-
-<div>
-  <?php
-
-  ?>
-</div>
-
-    <div class="container d-flex justify-content-center text-center" style="margin-top: 50px; background-color: #D1D1D1; max-width:400px;">
-            <form action="register.php" method="post" enctype="multipart/form-data">
-                <p class="fs-3 text-center">Register</p>
-
-                <div class="mb-3">
-                  <label class="form-label">Username:</label>
-                  <input type="text" name="username"class="form-control" placeholder="Username" required="required">
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Email address:</label>
-                  <input type="email" name="email"class="form-control" placeholder="Email" required="required" id="exampleInputEmail1" aria-describedby="emailHelp">
-                     
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Password:</label>
-                  <input type="password" name="password" class="form-control" placeholder="Password" required="required" id="exampleInputPassword1">
-                  
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword2" class="form-label">Repeat password:</label>
-                  <input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password" required="required" id="exampleInputPassword2">
-                </div>
-                <label>
-                  <input type="checkbox" name="terms_of_service" /> Accept terms of service
-                </label>
-                <div class="col text-center">
-                  <p class="fs-5">Already registered? <a href="loginform.php">Sign in</a></p>
-                </div>
-                
-                  <div class="g-recaptcha" data-sitekey="6Lfwz8AaAAAAANYNV_ni7_Bel5iAsN3bdV5Ee_qx"></div>
-                  <br/>
-            
-                <div class="col text-center" style="margin-bottom: 10px;">
-                <button type="submit" name="create" value="Sign Up" class="btn btn-primary">Submit</button>
-                </div>
+    <div class="wrapper" style="margin-top: 150px; margin-left: 600px; background-color: #D1D1D1;">
+        <h2 class ="fs-3 text-center">Sign Up</h2>
+        <p class="fs-3 text-center">Please fill this form to create an account.</p>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <div class="mb-3 text-center">
+                <label>Username:</label>
+                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            </div>    
+            <div class="mb-3 text-center">
+                <label>Password:</label>
+                <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+            </div>
+            <div class="mb-3 text-center">
+                <label>Confirm Password:</label>
+                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+                <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+            </div>
+            <div class="col text-center" style="margin-bottom: 10px;">
+                <input type="submit" class="btn btn-primary" value="Submit">
+                <input type="reset" class="btn btn-secondary ml-2" value="Reset">
+            </div>
+            <p class="col text-center fs-5">Already have an account? <a href="loginform.php">Login here</a>.</p>
         </form>
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
-    <script type="text/javascript">
-	$(function(){
-		$('#register').click(function(e){
-
-			var valid = this.form.checkValidity();
-
-			if(valid){
-
-
-			var username 	= $('#username').val();
-			var email 		= $('#email').val();
-			var password = $('#password').val();
-			var password_confirm 	= $('#password_confirm').val();
-			
-
-				e.preventDefault();	
-
-				$.ajax({
-					type: 'POST',
-					url: 'register.php',
-					data: {username:username,email: email,password: password,password_confirm: password_confirm},
-					success: function(data){
-					Swal.fire({
-								'title': 'Successful',
-								'text': data,
-								'type': 'success'
-								})
-							
-					},
-					error: function(data){
-						Swal.fire({
-								'title': 'Errors',
-								'text': 'There were errors while saving the data.',
-								'type': 'error'
-								})
-					}
-				});
-
-				
-			}else{
-				
-			}
-
-			
-
-
-
-		});		
-
-		
-	});
-	
-</script>
-
-
-
-  </body>
+    </div>    
+</body>
 </html>
-

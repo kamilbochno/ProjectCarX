@@ -1,10 +1,3 @@
-<?php
-  
-  session_start();
-
-  
-
-?>
 
 
 <!doctype html>
@@ -62,11 +55,9 @@
   
   <main>
     
-    <?php
+  
 
-      echo"<p>Hello ".$_SESSION['login'].'! [<a href="logout.php">Logout</a>]</p>';
 
-    ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       
         <a class="navbar-brand" href="#">
